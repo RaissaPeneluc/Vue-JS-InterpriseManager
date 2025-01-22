@@ -10,12 +10,12 @@
         
         <!-- Botão para adicionar novo produto -->
         <VContainer>
-            <v-btn color="secondary" @click="dialog = true">Criar Produto</v-btn>
+            <v-btn color="secondary" @click="dialogCreate = true">Criar Produto</v-btn>
         </VContainer>
 
         <!-- Botão para editar um produto -->
         <VContainer>
-            <v-btn color="secondary">Editar Produto</v-btn>
+            <v-btn color="secondary" @click="dialogEdit = true" :disabled="!selectedProduct">Editar Produto</v-btn>
         </VContainer>
 
         <!-- Botão para detalhar um produto -->
@@ -30,10 +30,22 @@
         
     </VContainer>
     
+    <!-- Dropdown para selecionar um produto -->
+    <VContainer class="d-flex justify-center mt-5">
+        <v-select
+            v-model="selectedProduct"
+            :items="products"
+            item-text="title"
+            item-value="id"
+            label="Selecione um produto"
+            outlined
+            dense
+        ></v-select>
+    </VContainer>
 
     <!-- Tabela de Produtos -->
     <VContainer>
-        <v-data-table :headers="headers" :items="products" :item-value="id" class="elevation-1">
+        <v-data-table :headers="headers" :items="products" item-value="id" class="elevation-1">
             <template v-slot:items="props">
                 <tr :key="props.item.id">
                     <td>{{ props.item.title }}</td>
@@ -50,7 +62,7 @@
 
     <!-- Formulário Modal -->
     <VContainer>
-        <v-dialog v-model="dialog" max-width="600">
+        <v-dialog v-model="dialogCreate" max-width="600">
             <v-card>
                 <v-card-title>Criar Produto</v-card-title>
                 <v-card-text>
@@ -70,6 +82,27 @@
         </v-dialog>
     </VContainer>
 
+    <!-- Modal de Editar Produto -->
+    <VContainer>
+        <v-dialog v-model="dialogEdit" max-width="600">
+            <v-card>
+                <v-card-title>Editar Produto</v-card-title>
+                <v-card-text>
+                    <v-form ref="form">
+                        <v-text-field label="Título" v-model="editProduct.title" required></v-text-field>
+                        <v-text-field label="Categoria" v-model="editProduct.category" required></v-text-field>
+                        <v-text-field label="Preço" v-model="editProduct.price" type="number" required></v-text-field>
+                        <v-textarea label="Descrição" v-model="editProduct.description" required></v-textarea>
+                        <v-text-field label="URL da Imagem" v-model="editProduct.image" required></v-text-field>
+                    </v-form>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="secondary" @click="dialogEdit = false">Cancelar</v-btn>
+                    <v-btn color="primary" @click="updateProduct">Salvar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </VContainer>
 </template>
 
 <script>
@@ -86,6 +119,25 @@
                 { text: 'Imagem', value: 'image' },
             ];
 
+            const dialogCreate = ref(false);
+            const dialogEdit = ref(false);
+            const selectedProduct = ref(null);
+            const newProduct = ref({
+                title: "",
+                category: "",
+                price: "",
+                description: "",
+                image: "",
+            });
+
+            const editProduct = ref({
+                title: "",
+                category: "",
+                price: "",
+                description: "",
+                image: "",
+            });
+
             // Função para carregar os produtos da API.
             const loadProducts = async () => {
                 try{
@@ -99,15 +151,6 @@
                 }
             };
 
-            const dialog = ref(false); // Controle do modal.
-            const newProduct = ref({
-                title: '',
-                category: '',
-                price: '',
-                description: '',
-                image: ''
-            });
-
             // Função para criar um novo produto.
             const createProduct = async () => {
                 try {
@@ -119,14 +162,18 @@
 
                     const createdProduct = await response.json();
                     products.value.push(createdProduct); // Atualizar a lista com o novo produto.
-                    dialog.value = false; // Fechar o modal.
+
+                    // Limpar o formulário
                     newProduct.value = {
-                        title: '',
-                        category: '',
-                        price: '',
-                        description: '',
-                        image: ''
-                    }; // Limpar o formulário.
+                        title: "",
+                        category: "",
+                        price: "",
+                        description: "",
+                        image: "",
+                    };
+
+                    // Fechar o diálogo
+                    dialogCreate.value = false;
 
                 } catch (error) {
                     console.error(error);
@@ -134,15 +181,43 @@
                 }
             };
 
+            const updateProduct = async () => {
+                if (!selectedProduct.value) return;
+
+                try {
+                    const response = await fetch(
+                        `https://fakestoreapi.com/products/${selectedProduct.value}`,
+                        {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(editProduct.value),
+                        }
+                    );
+                    const updatedProduct = await response.json();
+                    const index = products.value.findIndex(
+                        (product) => product.id === selectedProduct.value
+                    );
+                    if (index !== -1) products.value[index] = updatedProduct;
+                    dialogEdit.value = false;
+                } catch (error) {
+                    console.error(error);
+                    alert("Erro ao editar o produto.");
+                }
+            };
+
             // Carregar os produtos quando o componente for montado.
             onMounted(loadProducts);
 
-            return { 
+            return {
                 products,
                 headers,
-                dialog,
+                dialogCreate,
+                dialogEdit,
                 newProduct,
-                createProduct
+                editProduct,
+                selectedProduct,
+                createProduct,
+                updateProduct,
             };
         },
     }
