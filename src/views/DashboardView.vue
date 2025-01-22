@@ -1,6 +1,6 @@
 <!-- Este componente é a página Dashboard que o usuário acessa após realizar
 o login com sucesso. É uma página protegida, onde os dados do usuário autenticado
-são exibidos.  -->
+são exibidos, ela só pode ser acessada com autenticação.  -->
 
 <template>
 

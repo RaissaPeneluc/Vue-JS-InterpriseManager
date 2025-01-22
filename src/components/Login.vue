@@ -1,7 +1,7 @@
 <!-- Este componente é a página Login onde o usuário irá realizar o login.
 Se realizado corretamente, após autenticação ele será direcionado para 
-acessar as funcionalidades da plataforma.  -->
-
+acessar o gerenciamento das funcionalidades da plataforma.  -->
+ 
 <template>
   <VAppBar color="primary">
     <v-toolbar-title>Gerenciador de Empresa e Estoque</v-toolbar-title>
