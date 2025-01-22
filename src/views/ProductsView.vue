@@ -7,27 +7,22 @@
 
     <!-- Container de botões de alterações -->
     <VContainer class="d-flex justify-center align-center">
-        
-        <!-- Botão para adicionar novo produto -->
         <VContainer>
             <v-btn color="secondary" @click="dialogCreate = true">Criar Produto</v-btn>
         </VContainer>
 
-        <!-- Botão para editar um produto -->
         <VContainer>
             <v-btn color="secondary" @click="dialogEdit = true" :disabled="!selectedProduct">Editar Produto</v-btn>
         </VContainer>
 
-        <!-- Botão para detalhar um produto -->
         <VContainer>
             <v-btn color="secondary">Detalhar Produto</v-btn>
         </VContainer>
 
         <!-- Botão para deletar um produto -->
         <VContainer>
-            <v-btn color="secondary">Deletar Produto</v-btn>
+            <v-btn color="secondary" @click="deleteProduct" :disabled="!selectedProduct">Deletar Produto</v-btn>
         </VContainer>
-        
     </VContainer>
     
     <!-- Dropdown para selecionar um produto -->
@@ -75,7 +70,7 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="secondary" @click="dialog = false">Cancelar</v-btn>
+                    <v-btn color="secondary" @click="dialogCreate = false">Cancelar</v-btn>
                     <v-btn color="primary" @click="createProduct">Salvar</v-btn>
                 </v-card-actions>
             </v-card>
@@ -143,8 +138,7 @@
                 try{
                     const response = await fetch('https://fakestoreapi.com/products');
                     const data = await response.json();
-
-                    products.value = data; // Armazenar os produtos na variável reativa.
+                    products.value = data;
                 } catch (error) {
                     console.error(error);
                     alert('Erro ao buscar os produtos.');
@@ -161,7 +155,7 @@
                     });
 
                     const createdProduct = await response.json();
-                    products.value.push(createdProduct); // Atualizar a lista com o novo produto.
+                    products.value.push(createdProduct); 
 
                     // Limpar o formulário
                     newProduct.value = {
@@ -174,13 +168,13 @@
 
                     // Fechar o diálogo
                     dialogCreate.value = false;
-
                 } catch (error) {
                     console.error(error);
                     alert('Erro ao criar o produto.');
                 }
             };
 
+            // Função para editar um produto.
             const updateProduct = async () => {
                 if (!selectedProduct.value) return;
 
@@ -205,6 +199,29 @@
                 }
             };
 
+            // Função para deletar um produto.
+            const deleteProduct = async () => {
+                if (!selectedProduct.value) return;
+
+                try {
+                    const response = await fetch(`https://fakestoreapi.com/products/${selectedProduct.value}`, {
+                        method: "DELETE",
+                    });
+
+                    if (response.ok) {
+                        // Remover o produto da lista
+                        products.value = products.value.filter(
+                            (product) => product.id !== selectedProduct.value
+                        );
+                    } else {
+                        alert("Erro ao excluir o produto.");
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert("Erro ao excluir o produto.");
+                }
+            };
+
             // Carregar os produtos quando o componente for montado.
             onMounted(loadProducts);
 
@@ -218,6 +235,7 @@
                 selectedProduct,
                 createProduct,
                 updateProduct,
+                deleteProduct,
             };
         },
     }
