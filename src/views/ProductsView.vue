@@ -16,7 +16,7 @@
         </VContainer>
 
         <VContainer>
-            <v-btn color="secondary">Detalhar Produto</v-btn>
+            <v-btn color="secondary" @click="viewProductDetails" :disabled="!selectedProduct">Detalhar Produto</v-btn>
         </VContainer>
 
         <!-- Botão para deletar um produto -->
@@ -98,6 +98,31 @@
             </v-card>
         </v-dialog>
     </VContainer>
+
+    <!-- Modal de Detalhes do Produto -->
+    <VContainer>
+        <v-dialog v-model="dialogDetails" max-width="600">
+            <v-card>
+                <v-card-title>Detalhes do Produto</v-card-title>
+                <v-card-text>
+                    <v-row>
+                        <v-col>
+                            <v-img :src="productDetails.image" max-width="150"/>
+                        </v-col>
+                        <v-col>
+                            <div><strong>Título:</strong> {{ productDetails.title }}</div>
+                            <div><strong>Categoria:</strong> {{ productDetails.category }}</div>
+                            <div><strong>Preço:</strong> {{ productDetails.price }}</div>
+                            <div><strong>Descrição:</strong> {{ productDetails.description }}</div>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="secondary" @click="dialogDetails = false">Fechar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </VContainer>
 </template>
 
 <script>
@@ -105,10 +130,11 @@
 
     export default {
         setup() {
-            const products = ref ([]);
+            const products = ref([]);
+            const productDetails = ref(null);
             const headers = [
                 { text: 'Título', align: 'start', key: 'title', value: 'title' },
-                { text: 'Categoria', value: 'category'},
+                { text: 'Categoria', value: 'category' },
                 { text: 'Preço', value: 'price' },
                 { text: 'Descrição', value: 'description' },
                 { text: 'Imagem', value: 'image' },
@@ -116,6 +142,7 @@
 
             const dialogCreate = ref(false);
             const dialogEdit = ref(false);
+            const dialogDetails = ref(false);
             const selectedProduct = ref(null);
             const newProduct = ref({
                 title: "",
@@ -135,13 +162,28 @@
 
             // Função para carregar os produtos da API.
             const loadProducts = async () => {
-                try{
+                try {
                     const response = await fetch('https://fakestoreapi.com/products');
                     const data = await response.json();
                     products.value = data;
                 } catch (error) {
                     console.error(error);
                     alert('Erro ao buscar os produtos.');
+                }
+            };
+
+            // Função para exibir detalhes de um produto.
+            const viewProductDetails = async () => {
+                if (!selectedProduct.value) return;
+
+                try {
+                    const response = await fetch(`https://fakestoreapi.com/products/${selectedProduct.value}`);
+                    const data = await response.json();
+                    productDetails.value = data;
+                    dialogDetails.value = true;
+                } catch (error) {
+                    console.error(error);
+                    alert('Erro ao buscar os detalhes do produto.');
                 }
             };
 
@@ -155,9 +197,8 @@
                     });
 
                     const createdProduct = await response.json();
-                    products.value.push(createdProduct); 
+                    products.value.push(createdProduct);
 
-                    // Limpar o formulário
                     newProduct.value = {
                         title: "",
                         category: "",
@@ -166,7 +207,6 @@
                         image: "",
                     };
 
-                    // Fechar o diálogo
                     dialogCreate.value = false;
                 } catch (error) {
                     console.error(error);
@@ -204,25 +244,20 @@
                 if (!selectedProduct.value) return;
 
                 try {
-                    const response = await fetch(`https://fakestoreapi.com/products/${selectedProduct.value}`, {
-                        method: "DELETE",
-                    });
-
-                    if (response.ok) {
-                        // Remover o produto da lista
-                        products.value = products.value.filter(
-                            (product) => product.id !== selectedProduct.value
-                        );
-                    } else {
-                        alert("Erro ao excluir o produto.");
-                    }
+                    await fetch(
+                        `https://fakestoreapi.com/products/${selectedProduct.value}`,
+                        { method: "DELETE" }
+                    );
+                    products.value = products.value.filter(
+                        (product) => product.id !== selectedProduct.value
+                    );
+                    selectedProduct.value = null;
                 } catch (error) {
                     console.error(error);
-                    alert("Erro ao excluir o produto.");
+                    alert("Erro ao deletar o produto.");
                 }
             };
 
-            // Carregar os produtos quando o componente for montado.
             onMounted(loadProducts);
 
             return {
@@ -230,13 +265,17 @@
                 headers,
                 dialogCreate,
                 dialogEdit,
+                dialogDetails,
+                selectedProduct,
                 newProduct,
                 editProduct,
-                selectedProduct,
+                productDetails,
+                loadProducts,
                 createProduct,
                 updateProduct,
                 deleteProduct,
+                viewProductDetails
             };
-        },
-    }
+        }
+    };
 </script>
