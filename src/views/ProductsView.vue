@@ -6,21 +6,21 @@
     </VContainer>
 
     <!-- Container de botões de alterações -->
-    <VContainer class="d-flex justify-center align-center">
-        <VContainer>
+    <VContainer class="d-flex pa-5 mt-10">
+        <VContainer class="d-flex justify-center align-center">
             <v-btn color="secondary" @click="dialogCreate = true">Criar Produto</v-btn>
         </VContainer>
 
-        <VContainer>
+        <VContainer class="d-flex justify-center align-center">
             <v-btn color="secondary" @click="dialogEdit = true" :disabled="!selectedProduct">Editar Produto</v-btn>
         </VContainer>
 
-        <VContainer>
+        <VContainer class="d-flex justify-center align-center">
             <v-btn color="secondary" @click="viewProductDetails" :disabled="!selectedProduct">Detalhar Produto</v-btn>
         </VContainer>
 
         <!-- Botão para deletar um produto -->
-        <VContainer>
+        <VContainer class="d-flex justify-center align-center">
             <v-btn color="secondary" @click="deleteProduct" :disabled="!selectedProduct">Deletar Produto</v-btn>
         </VContainer>
     </VContainer>
