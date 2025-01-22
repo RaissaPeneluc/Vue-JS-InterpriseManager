@@ -43,22 +43,24 @@ e deletar um produto. -->
     ></v-select>
   </VContainer>
 
-  <!-- Tabela de Produtos -->
+  <!-- Lista de Produtos -->
   <VContainer>
-    <v-data-table :headers="headers" :items="products" item-value="id" class="elevation-1">  <!-- Define o cabeçalho da tabela e os dados dos produtos-->
-      <template v-slot:items="props"> <!-- Renderiza cada linha da tabela -->
-        <tr :key="props.item.id">
-          <td>{{ props.item.title }}</td>
-          <td>{{ props.item.category }}</td>
-          <td>{{ props.item.price }}</td>
-          <td>{{ props.item.description }}</td>
-          <td>
-            <v-img :src="props.item.image" max-width="50" />
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
-  </VContainer>
+        <v-list class="text-lg">
+            <v-list-item v-for="item in products" :key="item.id" class="pa-5" >
+                <v-row>
+                    <v-col cols="2" class="d-flex align-center justify-center pa-6" >
+                         <img :src="item.image" alt="Imagem do produto" style="max-width: 100px;"/>
+                    </v-col>
+                    <v-col cols="10">
+                      <v-list-item-title class="font-weight-bold text-h5">{{ item.title }}</v-list-item-title>
+                        <v-list-item-subtitle class="text-subtitle-1 mt-1 mb-2">Categoria: {{ item.category }}</v-list-item-subtitle>
+                        <v-list-item-subtitle class="text-subtitle-1 mb-2">Descrição: {{ item.description }}</v-list-item-subtitle>
+                        <v-list-item-subtitle class="text-subtitle-1">Preço: {{ item.price }}</v-list-item-subtitle>
+                    </v-col>
+                </v-row>
+            </v-list-item>
+        </v-list>
+    </VContainer>
 
   <!-- Formulário de Criação Modal -->
   <VContainer>
