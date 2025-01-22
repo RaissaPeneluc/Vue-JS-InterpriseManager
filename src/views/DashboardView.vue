@@ -22,8 +22,8 @@ são exibidos.  -->
     <VContainer class="d-flex justify-center align-center flex-column">
       <v-card-title>Gerenciadores:</v-card-title>
       <v-card class="d-flex flex-column pa-5" max-width="500" color="primary">
-        <v-btn color="secondary" class="mb-3">Estoque</v-btn>
-        <v-btn color="secondary">Usuários</v-btn>
+        <v-btn @click="changeToProducts" color="secondary" class="mb-3">Estoque</v-btn>
+        <v-btn @click="changeToUsers" color="secondary">Usuários</v-btn>
       </v-card>
     </VContainer>
 
@@ -44,7 +44,15 @@ são exibidos.  -->
         window.location.href = '/'; // Redireciona o usuário para a página inicial.
       };
       
-      return { user: authStore.user, logout };
+      const changeToProducts = () => {
+        window.location.href = '/products';
+      };
+
+      const changeToUsers = () => {
+        window.location.href = '/users';
+      };
+
+      return { user: authStore.user, logout, changeToProducts, changeToUsers};
     },
      
   };
