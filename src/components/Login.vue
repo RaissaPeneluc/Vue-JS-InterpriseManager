@@ -7,8 +7,9 @@ acessar o gerenciamento das funcionalidades da plataforma.  -->
     <v-toolbar-title>Gerenciador de Empresa e Estoque</v-toolbar-title>
   </VAppBar>
 
+  <!-- Card de Login -->
   <VContainer class="d-flex justify-center align-center" style="height: 100vh;">
-    <v-card class="pa-5" max-width="400">
+    <v-card class="pa-5 w-25">
       <v-card-title>Login</v-card-title>
       <v-card-text>
         <v-form @submit.prevent="handleLogin">

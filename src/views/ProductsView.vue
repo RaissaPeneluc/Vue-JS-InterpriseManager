@@ -44,22 +44,20 @@ e deletar um produto. -->
   </VContainer>
 
   <!-- Lista de Produtos -->
-  <VContainer>
-        <v-list class="text-lg">
-            <v-list-item v-for="item in products" :key="item.id" class="pa-5" >
-                <v-row>
-                    <v-col cols="2" class="d-flex align-center justify-center pa-6" >
-                         <img :src="item.image" alt="Imagem do produto" style="max-width: 100px;"/>
-                    </v-col>
-                    <v-col cols="10">
-                      <v-list-item-title class="font-weight-bold text-h5">{{ item.title }}</v-list-item-title>
-                        <v-list-item-subtitle class="text-subtitle-1 mt-1 mb-2">Categoria: {{ item.category }}</v-list-item-subtitle>
-                        <v-list-item-subtitle class="text-subtitle-1 mb-2">Descrição: {{ item.description }}</v-list-item-subtitle>
-                        <v-list-item-subtitle class="text-subtitle-1">Preço: {{ item.price }}</v-list-item-subtitle>
-                    </v-col>
-                </v-row>
-            </v-list-item>
-        </v-list>
+
+    <VContainer>
+      <v-card 
+        v-for="item in products" 
+        :key="item.id" 
+        class="d-flex d-inline-flex pa-5 w-25 mb-15 me-5" 
+      >
+        <v-card-text class="">
+          <img :src="item.image" alt="Imagem do produto" style="max-width: 100px;"/>
+          <v-card-title class="font-weight-bold text-h6">{{ item.title }}</v-card-title>
+          <v-card-subtitle class="text-subtitle-2 mt-1 mb-2">Categoria: {{ item.category }}</v-card-subtitle>
+          <v-card-subtitle class="text-subtitle-1">Preço: {{ item.price }}</v-card-subtitle>
+        </v-card-text>
+      </v-card>
     </VContainer>
 
   <!-- Formulário de Criação Modal -->
