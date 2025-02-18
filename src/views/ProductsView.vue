@@ -16,7 +16,7 @@ e deletar um produto. -->
       <v-btn color="secondary" @click="dialogCreate = true">Criar Produto</v-btn>
     </VContainer>
 
-    <VContainer class="d-flex justify-center align-center">
+    <!-- <VContainer class="d-flex justify-center align-center">
       <v-btn color="secondary" @click="openEditDialog" :disabled="!selectedProduct">Editar Produto</v-btn>
     </VContainer>
 
@@ -26,10 +26,10 @@ e deletar um produto. -->
 
     <VContainer class="d-flex justify-center align-center">
       <v-btn color="secondary" @click="deleteProduct" :disabled="!selectedProduct">Deletar Produto</v-btn>
-    </VContainer>
+    </VContainer> -->
   </VContainer>
 
-  <!-- Dropdown para selecionar um produto -->
+  <!-- Dropdown para selecionar um produto
   <VContainer class="d-flex justify-center mt-5">
     <v-select
       v-model="selectedProduct"
@@ -41,7 +41,7 @@ e deletar um produto. -->
       outlined
       dense
     ></v-select>
-  </VContainer>
+  </VContainer> -->
 
   <!-- Lista de Produtos -->
 
@@ -49,13 +49,41 @@ e deletar um produto. -->
       <v-card 
         v-for="item in products" 
         :key="item.id" 
-        class="d-flex d-inline-flex pa-5 w-25 mb-15 me-5" 
+        class="d-flex d-inline-flex pa-2 w-25 mb-15 me-5" 
       >
         <v-card-text class="">
-          <img :src="item.image" alt="Imagem do produto" style="max-width: 100px;"/>
-          <v-card-title class="font-weight-bold text-h6">{{ item.title }}</v-card-title>
-          <v-card-subtitle class="text-subtitle-2 mt-1 mb-2">Categoria: {{ item.category }}</v-card-subtitle>
-          <v-card-subtitle class="text-subtitle-1">Preço: {{ item.price }}</v-card-subtitle>
+          <img :src="item.image" alt="Imagem do produto" style="max-width: 100px; display: flex;"/>
+          <v-card-title class="font-weight-bold text-h6 text-wrap">{{ item.title }}</v-card-title>
+          
+          <v-row class="d-flex mt-.5">
+
+            <v-col id="content" class="">
+              <v-card-subtitle class="text-subtitle-2 mb-2">{{ item.category }}</v-card-subtitle>
+              <v-card-subtitle class="text-subtitle-1">Preço: {{ item.price }}</v-card-subtitle>
+            </v-col>
+            
+            <v-menu>
+                <template v-slot:activator="{props}">
+                  <v-btn 
+                    icon="mdi-dots-vertical"
+                    color="secondary" 
+                    v-bind="props"
+                  ></v-btn>
+                </template>
+
+                <v-card class="d-flex">
+                  <v-card-actions>
+                    <v-btn color="primary" @click="openEditDialog(item)">Editar</v-btn>
+                    <v-btn color="primary" @click="viewProductDetails(item)">Detalhes</v-btn>
+                    <v-btn color="primary" @click="deleteProduct(item)">Delete</v-btn>
+                    <v-btn color="secondary" @click="menuConfig = false">Sair</v-btn>
+                  </v-card-actions>
+                </v-card>
+            </v-menu>
+            
+            
+          </v-row>
+          
         </v-card-text>
       </v-card>
     </VContainer>
@@ -140,6 +168,7 @@ export default {
 
     // Definindo os cabeçalhos da tabela de produtos.
     const headers = [
+        { text: 'Id', value:'id' },
         { text: 'Título', align: 'start', value: 'title' },
         { text: 'Categoria', value: 'category' },
         { text: 'Preço', value: 'price' },
@@ -151,6 +180,7 @@ export default {
     const dialogCreate = ref(false);
     const dialogEdit = ref(false);
     const dialogDetails = ref(false);
+    const menuConfig = ref(false);
 
     // Variável reativa para armazenar o produto selecionado no dropdown.
     const selectedProduct = ref(null);
@@ -166,6 +196,7 @@ export default {
 
     // Definindo um objeto reativo para armazenar os dados do produto que será editado.
     const editProduct = ref({
+        id: '',
         title: '',
         category: '',
         price: '',
@@ -182,47 +213,6 @@ export default {
       } catch (error) {
         console.error(error);
         alert('Erro ao buscar os produtos.');
-      }
-    };
-
-    // Função para abrir o modal de edição e carregar os dados do produto selecionado.
-    const openEditDialog = async () => {
-
-      if (!selectedProduct.value) return; // Verifica se algum produto foi selecionado
-
-      try {
-        const response = await fetch(`https://fakestoreapi.com/products/${selectedProduct.value}`); // Busca os dados do produto específico na API.
-        const data = await response.json(); 
-
-        // Atribuindo os dados do produto ao objeto editProduct para serem usados no formulário de edição.
-        editProduct.value = {
-          title: data.title,
-          category: data.category,
-          price: data.price,
-          description: data.description,
-          image: data.image,
-        };
-
-         dialogEdit.value = true; // Abre o modal de edição
-      } catch (error) {
-        console.error(error);
-        alert('Erro ao buscar os detalhes do produto.');
-      }
-    };
-
-    // Função para exibir detalhes de um produto.
-    const viewProductDetails = async () => {
-
-      if (!selectedProduct.value) return; // Verifica se algum produto foi selecionado.
-
-      try {
-        const response = await fetch(`https://fakestoreapi.com/products/${selectedProduct.value}`); // Busca os dados do produto específico na API.
-        const data = await response.json();
-        productDetails.value = data; // Atribui os dados do produto ao objeto productDetails para serem exibidos no modal de detalhes.
-        dialogDetails.value = true;  // Abre o modal de detalhes.
-      } catch (error) {
-        console.error(error);
-        alert('Erro ao buscar os detalhes do produto.');
       }
     };
 
@@ -254,15 +244,60 @@ export default {
         alert('Erro ao criar o produto.');
       }
     };
+    
+    const openModal = async () =>{
+        try{
+          menuConfig.value = false; // Abre o modal de configuração
+        } catch(error){
+          console.error(error);
+          alert('Erro ao abrir modal.');
+        }
+    } 
+
+
+    // Função para abrir o modal de edição e carregar os dados do produto selecionado.
+    const openEditDialog = async (selectedProduct) => {
+
+      try {
+        const response = await fetch(`https://fakestoreapi.com/products/${selectedProduct.id}`); // Busca os dados do produto específico na API.
+        const data = await response.json(); 
+
+        // Atribuindo os dados do produto ao objeto editProduct para serem usados no formulário de edição.
+        editProduct.value = {
+          id: data.id,
+          title: data.title,
+          category: data.category,
+          price: data.price,
+          description: data.description,
+          image: data.image,
+        };
+
+         dialogEdit.value = true; // Abre o modal de edição
+      } catch (error) {
+        console.error(error);
+        alert('Erro ao buscar os detalhes do produto.');
+      }
+    };
+
+    // Função para exibir detalhes de um produto.
+    const viewProductDetails = async (selectedProduct) => {
+
+      try {
+        const response = await fetch(`https://fakestoreapi.com/products/${selectedProduct.id}`); // Busca os dados do produto específico na API.
+        const data = await response.json();
+        productDetails.value = data; // Atribui os dados do produto ao objeto productDetails para serem exibidos no modal de detalhes.
+        dialogDetails.value = true;  // Abre o modal de detalhes.
+      } catch (error) {
+        console.error(error);
+        alert('Erro ao buscar os detalhes do produto.');
+      }
+    };
 
     // Função para editar um produto.
     const updateProduct = async () => {
-    
-        if (!selectedProduct.value) return; // Verifica se algum produto foi selecionado.
-
         try {
             // Requisição PUT para a API de produtos.
-            const response = await fetch(`https://fakestoreapi.com/products/${selectedProduct.value}`, {
+            const response = await fetch(`https://fakestoreapi.com/products/${editProduct.value.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(editProduct.value),
@@ -272,7 +307,7 @@ export default {
 
             // Encontrando o índice do produto que será editado no array reativo products.
             const index = products.value.findIndex(
-                (product) => product.id === selectedProduct.value
+                (product) => product.id === editProduct.value.id
             );
 
             // Atualiza o produto no array reativo products com os dados editados.
@@ -288,18 +323,17 @@ export default {
     };
 
     // Função para deletar um produto.
-    const deleteProduct = async () => {
-        if (!selectedProduct.value) return;
+    const deleteProduct = async (selectedProduct) => {
 
         try {
             // Requisição DELETE para a API de produtos.
-            await fetch(`https://fakestoreapi.com/products/${selectedProduct.value}`, { method: 'DELETE' });
+            await fetch(`https://fakestoreapi.com/products/${selectedProduct.id}`, { method: 'DELETE' });
 
             // Filtra o array reativo products removendo o produto deletado.
             products.value = products.value.filter(
-            (product) => product.id !== selectedProduct.value
+            (product) => product.id !== selectedProduct.id
             );
-            selectedProduct.value = null; // Limpa o produto selecionado.
+            selectedProduct.id = null; // Limpa o produto selecionado.
         } catch (error) {
             console.error(error);
             alert('Erro ao deletar o produto.');
@@ -314,13 +348,15 @@ export default {
       headers,
       dialogCreate,
       dialogEdit,
+      menuConfig,
       dialogDetails,
       selectedProduct,
       newProduct,
-        editProduct,
+      editProduct,
       productDetails,
       loadProducts,
-        openEditDialog,
+      openModal,
+      openEditDialog,
       createProduct,
       updateProduct,
       deleteProduct,
