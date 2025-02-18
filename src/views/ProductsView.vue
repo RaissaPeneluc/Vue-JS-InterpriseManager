@@ -15,33 +15,7 @@ e deletar um produto. -->
     <VContainer class="d-flex justify-center align-center">
       <v-btn color="secondary" @click="dialogCreate = true">Criar Produto</v-btn>
     </VContainer>
-
-    <!-- <VContainer class="d-flex justify-center align-center">
-      <v-btn color="secondary" @click="openEditDialog" :disabled="!selectedProduct">Editar Produto</v-btn>
-    </VContainer>
-
-    <VContainer class="d-flex justify-center align-center">
-      <v-btn color="secondary" @click="viewProductDetails" :disabled="!selectedProduct">Detalhar Produto</v-btn>
-    </VContainer>
-
-    <VContainer class="d-flex justify-center align-center">
-      <v-btn color="secondary" @click="deleteProduct" :disabled="!selectedProduct">Deletar Produto</v-btn>
-    </VContainer> -->
   </VContainer>
-
-  <!-- Dropdown para selecionar um produto
-  <VContainer class="d-flex justify-center mt-5">
-    <v-select
-      v-model="selectedProduct"
-      :items="products"
-      item-text="title"
-      item-value="id"
-      item-title="title"
-      label="Selecione um produto"
-      outlined
-      dense
-    ></v-select>
-  </VContainer> -->
 
   <!-- Lista de Produtos -->
 
@@ -80,8 +54,6 @@ e deletar um produto. -->
                   </v-card-actions>
                 </v-card>
             </v-menu>
-            
-            
           </v-row>
           
         </v-card-text>

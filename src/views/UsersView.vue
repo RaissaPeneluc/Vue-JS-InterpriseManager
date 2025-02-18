@@ -45,15 +45,27 @@ e deletar um usuário. -->
   
     <!-- Tabela de Usuários -->
     <VContainer>
-      <v-data-table :headers="headers" :items="users" item-value="id" class="elevation-1">  <!-- Define o cabeçalho da tabela e os dados dos usuários-->
-        <template v-slot:items="props">  <!-- Renderiza cada linha da tabela -->
-          <tr :key="props.item.id">
-            <td>{{ props.item.fullName }}</td>
-            <td>{{ props.item.username }}</td>
-            <td>{{ props.item.email }}</td>
-          </tr>
-        </template>
-      </v-data-table>
+        <v-data-table :headers="headers" :items="users" item-value="id" class="elevation-1">  <!-- Define o cabeçalho da tabela e os dados dos usuários-->
+          <template v-slot:top>
+            <v-toolbar flat>
+              <v-toolbar-title>Gerenciamento de Usuários</v-toolbar-title>
+              <v-divider 
+                class="mx-4"
+                inset
+                vertical
+              ></v-divider>
+              <v-spacer></v-spacer>
+
+              <template v-slot:items="props">  <!-- Renderiza cada linha da tabela -->
+                <tr :key="props.item.id">
+                  <td>{{ props.item.fullName }}</td>
+                  <td>{{ props.item.username }}</td>
+                  <td>{{ props.item.email }}</td>
+                </tr>
+              </template>
+            </v-toolbar>
+          </template>
+        </v-data-table>
     </VContainer>
   
     <!-- Formulário de Criação Modal -->
@@ -137,9 +149,9 @@ e deletar um usuário. -->
 
         // Definindo os cabeçalhos da tabela de usuários.
         const headers = [
-            { text: 'Nome', align: 'start', value: 'fullName' },
-            { text: 'Username', value: 'username' },
-            { text: 'E-mail', value: 'email' },
+            { title: 'Nome', text: 'Nome', align: 'start', value: 'fullName' },
+            { title: 'Username', text: 'Username', value: 'username' },
+            { title: 'E-mail', text: 'E-mail', value: 'email' },
         ];
         
         // Variáveis reativas para controlar a exibição dos diálogos.
