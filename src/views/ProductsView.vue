@@ -138,23 +138,13 @@ export default {
     const products = ref([]);  // Array reativo para armazenar os produtos.
     const productDetails = ref(null); // Objeto reativo para armazenar os detalhes do produto selecionado.
 
-    // Definindo os cabeçalhos da tabela de produtos.
-    const headers = [
-        { text: 'Id', value:'id' },
-        { text: 'Título', align: 'start', value: 'title' },
-        { text: 'Categoria', value: 'category' },
-        { text: 'Preço', value: 'price' },
-        { text: 'Descrição', value: 'description' },
-        { text: 'Imagem', value: 'image' },
-    ];
-
     // Variáveis reativas para controlar a exibição dos diálogos.
     const dialogCreate = ref(false);
     const dialogEdit = ref(false);
     const dialogDetails = ref(false);
     const menuConfig = ref(false);
 
-    // Variável reativa para armazenar o produto selecionado no dropdown.
+    // Variável reativa para armazenar o produto selecionado.
     const selectedProduct = ref(null);
 
     // Definindo um objeto reativo para armazenar os dados de um novo produto.
@@ -317,7 +307,6 @@ export default {
 
     return {
       products,
-      headers,
       dialogCreate,
       dialogEdit,
       menuConfig,
