@@ -4,14 +4,14 @@ acessar o gerenciamento das funcionalidades da plataforma.  -->
 
 <template>
   <VContainer>
-    <VAppBar class="" color="primary">
-      <VAppBarTitle>Gerenciamento de Estoques e Usuários</VAppBarTitle>
+    <VAppBar color="primary">
+      <VAppBarTitle>Gerenciamento de Produtos e Usuários</VAppBarTitle>
     </VAppBar>
   </VContainer>
 
   <!-- Card de Login -->
   <VContainer class="d-flex justify-center align-center" style="height: 100vh">
-    <v-card class="pa-5 w-25">
+    <v-card class="pa-5 w-25 border-thin">
       <v-card-title>Login</v-card-title>
       <v-card-text>
         <v-form @submit.prevent="handleLogin">

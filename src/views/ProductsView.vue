@@ -8,70 +8,73 @@ e deletar um produto. -->
 
   <!-- Container de botões de alterações -->
   <VContainer class="d-flex pa-5 mt-10">
-    <VContainer class="d-flex justify-center align-center">
-      <v-btn color="secondary" @click="dialogCreate = true"
-        >Criar Produto</v-btn
-      >
+    <VContainer class="d-flex justify-end align-center">
+      <v-btn color="secondary" @click="dialogCreate = true">
+        <v-icon icon="mdi-plus" start></v-icon>
+        Criar Produto
+      </v-btn>
     </VContainer>
   </VContainer>
 
   <!-- Lista de Produtos -->
 
   <VContainer>
-    <v-card
-      v-for="item in products"
-      :key="item.id"
-      class="d-flex d-inline-flex pa-2 w-25 mb-15 me-5"
-    >
-      <v-card-text class="">
-        <img
-          :src="item.image"
-          alt="Imagem do produto"
-          style="max-width: 100px; display: flex"
-        />
-        <v-card-title class="font-weight-bold text-h6 text-wrap">{{
-          item.title
-        }}</v-card-title>
+    <v-row class="justify-center">
+      <v-col
+        v-for="item in products"
+        :key="item.id"
+        class="d-inline-flex pa-2 ml-3 mb-15 align-center border-thin"
+        cols="2"
+      >
+        <v-card flat>
+          <v-img :src="item.image" alt="Imagem do produto" height="200px" />
 
-        <v-row class="d-flex mt-.5">
-          <v-col id="content" class="">
-            <v-card-subtitle class="text-subtitle-2 mb-2">{{
-              item.category
-            }}</v-card-subtitle>
-            <v-card-subtitle class="text-subtitle-1"
-              >Preço: {{ item.price }}</v-card-subtitle
-            >
-          </v-col>
+          <v-row no-gutters align="center" class="py-4">
+            <v-col cols="12">
+              <v-card-title class="font-weight-bold text-h6">{{
+                item.title
+              }}</v-card-title>
+            </v-col>
+            <v-col cols="6">
+              <v-list-item
+                :title="item.category"
+                :subtitle="`Preço: ${item.price}`"
+              />
+            </v-col>
 
-          <v-menu>
-            <template v-slot:activator="{ props }">
-              <v-btn
-                icon="mdi-dots-vertical"
-                color="secondary"
-                v-bind="props"
-              ></v-btn>
-            </template>
+            <v-col cols="6" class="d-flex justify-end">
+              <v-menu>
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                     icon="mdi-wrench"
+                    color="secondary"
+                    v-bind="props"
+                    size="small"
+                  ></v-btn>
+                </template>
 
-            <v-card class="d-flex">
-              <v-card-actions>
-                <v-btn color="primary" @click="openEditDialog(item)"
-                  >Editar</v-btn
-                >
-                <v-btn color="primary" @click="viewProductDetails(item)"
-                  >Detalhes</v-btn
-                >
-                <v-btn color="primary" @click="deleteProduct(item)"
-                  >Delete</v-btn
-                >
-                <v-btn color="secondary" @click="menuConfig = false"
-                  >Sair</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-menu>
-        </v-row>
-      </v-card-text>
-    </v-card>
+                <v-card class="d-flex">
+                  <v-card-actions>
+                    <v-btn color="primary" @click="openEditDialog(item)"
+                      >Editar</v-btn
+                    >
+                    <v-btn color="primary" @click="viewProductDetails(item)"
+                      >Detalhes</v-btn
+                    >
+                    <v-btn color="primary" @click="deleteProduct(item)"
+                      >Delete</v-btn
+                    >
+                    <v-btn icon="mdi-close" color="secondary" @click="menuConfig = false"
+                      ></v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </v-menu>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
   </VContainer>
 
   <!-- Formulário de Criação Modal -->
