@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '@/views/LoginView.vue';
 import ProductsView from '@/views/ProductsView.vue';
-import DashboardView from '@/views/DashboardView.vue';
 import UsersView from '@/views/UsersView.vue';
 
 // Array que define as rotas disponíveis na aplicação.
@@ -10,12 +9,6 @@ const routes = [
     path: '/',
     name: 'Login',
     component: Login,
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: DashboardView,
-    meta: { requiresAuth: true }, // Rota protegida.
   },
   {
     path: '/products',
