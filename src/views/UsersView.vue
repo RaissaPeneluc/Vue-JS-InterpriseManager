@@ -184,6 +184,12 @@ e deletar um usuário. -->
         <!-- Botão/Icon de Delete -->
         <v-icon size="small" @click="deleteUser(item)"> mdi-delete </v-icon>
       </template>
+
+      <!-- Criação de Botões e suas Ações -->
+      <template v-slot:[`item.teste`]="{ item }">
+        {{ item }}
+      </template>
+
     </v-data-table>
   </VContainer>
 </template>
@@ -202,6 +208,7 @@ export default {
       { title: "Username", text: "Username", value: "username" },
       { title: "E-mail", text: "E-mail", value: "email" },
       { title: "Actions", key: "actions", sortable: false },  
+      { title: "Teste", key: "teste", sortable: false },  
     ];
 
     // Variáveis reativas para controlar a exibição dos diálogos.
@@ -262,13 +269,12 @@ export default {
         });
 
         const createdUser = await response.json();
-        console.log(createdUser.value);
+        newUser.value.id = createdUser.id;
+
+        newUser.value.fullName = newUser.value.firstname + " " + newUser.value.lastname;
 
         // Adicionando o novo usuário ao array reativo users.
-        users.value.push({
-          fullName: createdUser.firstname + " " + createdUser.lastname,
-          ...createdUser,
-        });
+        users.value.push(newUser.value);
 
         // Limpando o objeto newUser.
         newUser.value = {
