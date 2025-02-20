@@ -4,11 +4,7 @@ irá exibir uma lista de usuários, obtendo funcionalidades para criar, editar, 
 e deletar um usuário. -->
 
 <template>
-  <VContainer>
-    <VAppBar class="" color="primary">
-      <VAppBarTitle>Usuários</VAppBarTitle>
-    </VAppBar>
-  </VContainer>
+  <NavBarComponent title="Usuários"></NavBarComponent>
 
   <!-- Tabela de Usuários -->
   <VContainer class="mt-15">
@@ -190,8 +186,12 @@ e deletar um usuário. -->
 
 <script>
 import { ref, onMounted } from "vue";
+import NavBarComponent from '@/components/NavBarComponent.vue';
 
 export default {
+  components: {
+    NavBarComponent
+  },
   setup() {
     const users = ref([]); // Array reativo para armazenar os usuários.
     const usersDetails = ref(null); // Objeto reativo para armazenar os detalhes do usuário selecionado.
