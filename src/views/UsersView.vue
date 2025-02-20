@@ -184,12 +184,6 @@ e deletar um usuário. -->
         <!-- Botão/Icon de Delete -->
         <v-icon size="small" @click="deleteUser(item)"> mdi-delete </v-icon>
       </template>
-
-      <!-- Criação de Botões e suas Ações -->
-      <template v-slot:[`item.teste`]="{ item }">
-        {{ item }}
-      </template>
-
     </v-data-table>
   </VContainer>
 </template>
@@ -208,7 +202,6 @@ export default {
       { title: "Username", text: "Username", value: "username" },
       { title: "E-mail", text: "E-mail", value: "email" },
       { title: "Actions", key: "actions", sortable: false },  
-      { title: "Teste", key: "teste", sortable: false },  
     ];
 
     // Variáveis reativas para controlar a exibição dos diálogos.
@@ -220,6 +213,7 @@ export default {
 
     // Definindo um objeto reativo para armazenar os dados de um novo usuário.
     const newUser = ref({
+      id: "",
       firstname: "",
       lastname: "",
       fullName: "",
@@ -278,6 +272,7 @@ export default {
 
         // Limpando o objeto newUser.
         newUser.value = {
+          id: "",
           firstname: "",
           lastname: "",
           fullName: "",
@@ -371,21 +366,8 @@ export default {
     // Função para exibir detalhes de um usuário.
     const viewUserDetails = async (selectedUser) => {
       try {
-        const response = await fetch(
-          `https://fakestoreapi.com/users/${selectedUser.id}`
-        ); // Buscando os dados do usuário específico na API.
-        const data = await response.json();
-
-        // Atribuindo os dados do usuário ao objeto usersDetails para serem exibidos no modal de detalhes
-        usersDetails.value = {
-          id: data.id,
-          fullName: data.name.firstname + " " + data.name.lastname,
-          username: data.username,
-          email: data.email,
-          password: data.password,
-          city: data.address.city,
-          phone: data.phone,
-        };
+        // Retirada do método GET e acessando os detalhes do usuário a partir do JSON de cada usuário gerado.
+        usersDetails.value = selectedUser;
 
         dialogDetails.value = true; // Abre o modal de detalhes.
       } catch (error) {

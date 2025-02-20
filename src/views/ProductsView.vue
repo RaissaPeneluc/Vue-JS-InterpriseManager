@@ -243,11 +243,8 @@ export default {
 
     // Função para exibir detalhes de um produto.
     const viewProductDetails = async (selectedProduct) => {
-
       try {
-        const response = await fetch(`https://fakestoreapi.com/products/${selectedProduct.id}`); // Busca os dados do produto específico na API.
-        const data = await response.json();
-        productDetails.value = data; // Atribui os dados do produto ao objeto productDetails para serem exibidos no modal de detalhes.
+        productDetails.value = selectedProduct; // Retirada do método GET e acessando os detalhes do usuário a partir do JSON de cada usuário gerado.
         dialogDetails.value = true;  // Abre o modal de detalhes.
       } catch (error) {
         console.error(error);
