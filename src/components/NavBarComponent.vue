@@ -2,8 +2,8 @@
 para todas as páginas, que receba os títulos dinamicamente -->
 
 <template>
-  <VContainer>
-    <VAppBar color="primary" class="d-flex">
+  <v-container>
+    <v-app-bar color="#5D2AA4" class="d-flex">
       <v-row no-gutters align="center" justify="space-between" class="mx-4">
         <v-col class="text-h5">{{ title }}</v-col>
 
@@ -20,8 +20,8 @@ para todas as páginas, que receba os títulos dinamicamente -->
           </v-btn>
         </v-col>
       </v-row>
-    </VAppBar>
-  </VContainer>
+    </v-app-bar>
+  </v-container>
 </template>
 
 <script setup>

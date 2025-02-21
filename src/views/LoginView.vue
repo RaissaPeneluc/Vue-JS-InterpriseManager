@@ -3,36 +3,49 @@ Se realizado corretamente, após autenticação ele será direcionado para
 acessar o gerenciamento das funcionalidades da plataforma.  -->
 
 <template>
-  <VContainer>
-    <VAppBar color="primary">
-      <VAppBarTitle>Gerenciamento de Produtos e Usuários</VAppBarTitle>
-    </VAppBar>
-  </VContainer>
+  <v-container>
+    <v-app-bar color="#5D2AA4">
+      <v-app-bar-title>Interprise Manager</v-app-bar-title>
+    </v-app-bar>
+  </v-container>
+
+  <v-container max-height="40vh" class="d-flex justify-center py-16">
+    <img src="../assets/group3.svg"/>
+  </v-container>
 
   <!-- Card de Login -->
-  <VContainer class="d-flex justify-center align-center" style="height: 100vh">
-    <v-card class="pa-5 w-25 border-thin">
-      <v-card-title>Login</v-card-title>
+  <v-container class="d-flex justify-center align-center" style="height: 30vh">
+    <v-card rounded="xl" class="pa-5 w-25 border-thin">
+      <v-card-title class="mb-2">Login</v-card-title>
       <v-card-text>
         <v-form @submit.prevent="handleLogin">
           <v-text-field
             v-model="email"
             label="E-mail"
+            placeholder="xxxxxxx@xxxxx.xxx"
             type="email"
+            variant="solo"
+            prepend-inner-icon="mdi-email"
+            clearable
             required
           ></v-text-field>
 
           <v-text-field
             v-model="password"
             label="Senha"
-            type="password"
+            :type="visible ? 'text' : 'password'"
+            variant="solo"
+            prepend-inner-icon="mdi-lock"
+            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+            @click:append-inner="visible = !visible"
+            clearable
             required
           ></v-text-field>
-          <v-btn type="submit" color="primary" class="mt-4">Entrar</v-btn>
+          <v-btn type="submit" color="#5D2AA4" class="mt-4" block>Entrar</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
-  </VContainer>
+  </v-container>
 </template>
 
 <script>
@@ -40,6 +53,9 @@ import { useAuthStore } from "../stores/auth"; // Importando uma store (gerencia
 import { ref } from "vue"; // Função para criar variáveis que podem ser monitoradas para mudanças.
 
 export default {
+  data: () => ({
+    visible: false,
+  }),
   setup() {
     const email = ref("");
     const password = ref("");

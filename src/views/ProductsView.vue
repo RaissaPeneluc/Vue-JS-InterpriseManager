@@ -6,27 +6,64 @@ e deletar um produto. -->
 <template>
   <NavBarComponent title="Produtos"></NavBarComponent>
 
-  <!-- Container de botões de alterações -->
-  <VContainer class="d-flex pa-5 mt-10">
-    <VContainer class="d-flex justify-end align-center">
-      <v-btn color="secondary" @click="dialogCreate = true">
+  <!-- Container do botão de criar um produto -->
+  <v-container class="d-flex pa-5 mt-10">
+    <v-container class="d-flex justify-end align-center">
+      <v-btn color="#c4bad1" @click="dialogCreate = true">
         <v-icon icon="mdi-plus" start></v-icon>
         Criar Produto
       </v-btn>
-    </VContainer>
-  </VContainer>
+    </v-container>
+  </v-container>
 
   <!-- Lista de Produtos -->
 
-  <VContainer>
+  <v-container>
     <v-row class="justify-center">
       <v-col
         v-for="item in products"
         :key="item.id"
-        class="d-inline-flex pa-2 ml-3 mb-15 align-center border-thin"
+        class="d-inline-flex pa-2 ml-3 mb-15 align-center rounded-lg border-thin"
         cols="2"
       >
         <v-card flat>
+          <v-row class="d-flex justify-end mb-1">
+            <v-col cols="3" >
+              <v-menu>
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    icon="mdi-cog"
+                    v-bind="props"
+                    size="small"
+                    tonal
+                  ></v-btn>
+                </template>
+
+                <v-card class="mt-1">
+                  <v-card-actions class="flex-column align-start">
+
+                    <v-btn
+                      icon="mdi-close"
+                      color="red"
+                      size="small"
+                      class=""
+                      @click="menuConfig = false"
+                    ></v-btn>
+                    <v-btn color="black" @click="openEditDialog(item)"
+                      >Editar</v-btn
+                    >
+                    <v-btn color="black" @click="viewProductDetails(item)"
+                      >Detalhes</v-btn
+                    >
+                    <v-btn color="black" @click="deleteProduct(item)"
+                      >Delete</v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </v-menu>
+            </v-col>
+          </v-row>
+
           <v-img :src="item.image" alt="Imagem do produto" height="200px" />
 
           <v-row no-gutters align="center" class="py-4">
@@ -41,44 +78,14 @@ e deletar um produto. -->
                 :subtitle="`Preço: ${item.price}`"
               />
             </v-col>
-
-            <v-col cols="6" class="d-flex justify-end">
-              <v-menu>
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                     icon="mdi-wrench"
-                    color="secondary"
-                    v-bind="props"
-                    size="small"
-                  ></v-btn>
-                </template>
-
-                <v-card class="d-flex">
-                  <v-card-actions>
-                    <v-btn color="primary" @click="openEditDialog(item)"
-                      >Editar</v-btn
-                    >
-                    <v-btn color="primary" @click="viewProductDetails(item)"
-                      >Detalhes</v-btn
-                    >
-                    <v-btn color="primary" @click="deleteProduct(item)"
-                      >Delete</v-btn
-                    >
-                    <v-btn icon="mdi-close" color="secondary" @click="menuConfig = false"
-                      ></v-btn
-                    >
-                  </v-card-actions>
-                </v-card>
-              </v-menu>
-            </v-col>
           </v-row>
         </v-card>
       </v-col>
     </v-row>
-  </VContainer>
+  </v-container>
 
-  <!-- Formulário de Criação Modal -->
-  <VContainer>
+  <!-- Modal do Formulário de Criação -->
+  <v-container>
     <v-dialog v-model="dialogCreate" max-width="600">
       <!-- Controla a exibição do diálogo de criação de produtos -->
       <v-card>
@@ -121,14 +128,14 @@ e deletar um produto. -->
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </VContainer>
+  </v-container>
 
-  <!-- Formulário de Editar Produto Modal -->
-  <VContainer>
+  <!-- Modal do Formulário de Editar Produto -->
+  <v-container>
     <v-dialog v-model="dialogEdit" max-width="600">
       <!-- Controla a exibição do diálogo de edição de produtos -->
       <v-card>
-        <v-card-title>Editar Produto</v-card-title>
+        <v-card-title class="pa-4">Editar Produto</v-card-title>
         <v-card-text>
           <v-form ref="form">
             <v-text-field
@@ -159,24 +166,24 @@ e deletar um produto. -->
             ></v-text-field>
           </v-form>
         </v-card-text>
-        <v-card-actions>
-          <v-btn color="secondary" @click="dialogEdit = false">Cancelar</v-btn>
-          <v-btn color="primary" @click="updateProduct">Salvar</v-btn>
-        </v-card-actions>
+        <v-container class="d-flex justify-end">
+          <v-btn color="#d35054" class="mr-4" @click="dialogEdit = false">Cancelar</v-btn>
+          <v-btn color="#c4bad1" @click="updateProduct">Salvar</v-btn>
+        </v-container>
       </v-card>
     </v-dialog>
-  </VContainer>
+  </v-container>
 
-  <!-- Formulário de Detalhes do Produto Modal -->
-  <VContainer>
+  <!-- Modal de Detalhes do Produto -->
+  <v-container>
     <v-dialog v-model="dialogDetails" max-width="600">
       <!-- Controla a exibição do diálogo de detalhes de produtos -->
-      <v-card>
+      <v-card class="pa-4">
         <v-card-title>Detalhes do Produto</v-card-title>
         <v-card-text>
           <v-row>
-            <v-col>
-              <v-img :src="productDetails.image" max-width="150" />
+            <v-col class="d-flex align-center">
+              <v-img :src="productDetails.image" max-width="300px"/>
             </v-col>
             <v-col>
               <div><strong>Título:</strong> {{ productDetails.title }}</div>
@@ -190,12 +197,12 @@ e deletar um produto. -->
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions>
-          <v-btn color="secondary" @click="dialogDetails = false">Fechar</v-btn>
-        </v-card-actions>
+        <v-container class="d-flex justify-end">
+          <v-btn color="#c4bad1" @click="dialogDetails = false">Fechar</v-btn>
+        </v-container>
       </v-card>
     </v-dialog>
-  </VContainer>
+  </v-container>
 </template>
 
 <script>

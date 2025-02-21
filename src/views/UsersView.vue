@@ -7,7 +7,7 @@ e deletar um usuário. -->
   <NavBarComponent title="Usuários"></NavBarComponent>
 
   <!-- Tabela de Usuários -->
-  <VContainer class="mt-15">
+  <v-container class="mt-15">
     <v-data-table
       :headers="headers"
       :items="users"
@@ -26,6 +26,7 @@ e deletar um usuário. -->
             <!-- Controla a exibição do diálogo de criação de usuários -->
             <template v-slot:activator="{ props }">
               <v-btn class="mb-2" color="primary" v-bind="props">
+                <v-icon icon="mdi-plus" start></v-icon>
                 Criar Usuário
               </v-btn>
             </template>
@@ -181,16 +182,16 @@ e deletar um usuário. -->
         <v-icon size="small" @click="deleteUser(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
-  </VContainer>
+  </v-container>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
-import NavBarComponent from '@/components/NavBarComponent.vue';
+import NavBarComponent from "@/components/NavBarComponent.vue";
 
 export default {
   components: {
-    NavBarComponent
+    NavBarComponent,
   },
   setup() {
     const users = ref([]); // Array reativo para armazenar os usuários.
@@ -201,7 +202,7 @@ export default {
       { title: "Nome", text: "Nome", align: "start", value: "fullName" },
       { title: "Username", text: "Username", value: "username" },
       { title: "E-mail", text: "E-mail", value: "email" },
-      { title: "Actions", key: "actions", sortable: false },  
+      { title: "Ações", key: "actions", sortable: false },
     ];
 
     // Variáveis reativas para controlar a exibição dos diálogos.
@@ -265,7 +266,8 @@ export default {
         const createdUser = await response.json();
         newUser.value.id = createdUser.id;
 
-        newUser.value.fullName = newUser.value.firstname + " " + newUser.value.lastname;
+        newUser.value.fullName =
+          newUser.value.firstname + " " + newUser.value.lastname;
 
         // Adicionando o novo usuário ao array reativo users.
         users.value.push(newUser.value);
