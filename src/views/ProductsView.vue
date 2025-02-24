@@ -28,7 +28,7 @@ e deletar um produto. -->
       >
         <v-card flat>
           <v-row class="d-flex justify-end mb-1">
-            <v-col cols="3" >
+            <v-col cols="3">
               <v-menu>
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -41,7 +41,6 @@ e deletar um produto. -->
 
                 <v-card class="mt-1">
                   <v-card-actions class="flex-column align-start">
-
                     <v-btn
                       icon="mdi-close"
                       color="red"
@@ -49,14 +48,20 @@ e deletar um produto. -->
                       class=""
                       @click="menuConfig = false"
                     ></v-btn>
-                    <v-btn color="black" @click="openEditDialog(item)"
-                      >Editar</v-btn
+                    <v-btn color="black" @click="openEditDialog(item)">
+                      <v-icon class="me-2" size="small"> mdi-pencil </v-icon>
+                      Editar
+                    </v-btn>
+
+                    <v-btn color="black" @click="viewProductDetails(item)">
+                      <v-icon class="me-2" color="#5D2AA4" size="small">
+                        mdi-information
+                      </v-icon>
+                      Detalhes</v-btn
                     >
-                    <v-btn color="black" @click="viewProductDetails(item)"
-                      >Detalhes</v-btn
-                    >
-                    <v-btn color="black" @click="deleteProduct(item)"
-                      >Delete</v-btn
+                    <v-btn color="black" @click="deleteProduct(item)">
+                      <v-icon class="me-2" size="small"> mdi-delete </v-icon>
+                      Delete</v-btn
                     >
                   </v-card-actions>
                 </v-card>
@@ -120,12 +125,12 @@ e deletar um produto. -->
             ></v-text-field>
           </v-form>
         </v-card-text>
-        <v-card-actions>
-          <v-btn color="secondary" @click="dialogCreate = false"
+        <v-container class="d-flex justify-end">
+          <v-btn color="#d35054" class="mr-4" @click="dialogCreate = false"
             >Cancelar</v-btn
           >
-          <v-btn color="primary" @click="createProduct">Salvar</v-btn>
-        </v-card-actions>
+          <v-btn color="#c4bad1" @click="createProduct">Salvar</v-btn>
+        </v-container>
       </v-card>
     </v-dialog>
   </v-container>
@@ -167,7 +172,9 @@ e deletar um produto. -->
           </v-form>
         </v-card-text>
         <v-container class="d-flex justify-end">
-          <v-btn color="#d35054" class="mr-4" @click="dialogEdit = false">Cancelar</v-btn>
+          <v-btn color="#d35054" class="mr-4" @click="dialogEdit = false"
+            >Cancelar</v-btn
+          >
           <v-btn color="#c4bad1" @click="updateProduct">Salvar</v-btn>
         </v-container>
       </v-card>
@@ -183,7 +190,7 @@ e deletar um produto. -->
         <v-card-text>
           <v-row>
             <v-col class="d-flex align-center">
-              <v-img :src="productDetails.image" max-width="300px"/>
+              <v-img :src="productDetails.image" max-width="300px" />
             </v-col>
             <v-col>
               <div><strong>Título:</strong> {{ productDetails.title }}</div>
@@ -198,7 +205,7 @@ e deletar um produto. -->
           </v-row>
         </v-card-text>
         <v-container class="d-flex justify-end">
-          <v-btn color="#c4bad1" @click="dialogDetails = false">Fechar</v-btn>
+          <v-btn color="#d35054" @click="dialogDetails = false">Fechar</v-btn>
         </v-container>
       </v-card>
     </v-dialog>

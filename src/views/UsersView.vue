@@ -14,6 +14,7 @@ e deletar um usuário. -->
       item-value="id"
       class="elevation-1"
     >
+
       <!-- Define o cabeçalho da tabela e os dados dos usuários-->
       <template v-slot:top>
         <v-toolbar flat>
@@ -25,7 +26,11 @@ e deletar um usuário. -->
           <v-dialog v-model="dialogCreate" max-width="600">
             <!-- Controla a exibição do diálogo de criação de usuários -->
             <template v-slot:activator="{ props }">
-              <v-btn class="mb-2" color="primary" v-bind="props">
+              <v-btn
+                class="bg-purple-lighten-5 mr-4"
+                color="black"
+                v-bind="props"
+              >
                 <v-icon icon="mdi-plus" start></v-icon>
                 Criar Usuário
               </v-btn>
@@ -71,12 +76,15 @@ e deletar um usuário. -->
                   ></v-text-field>
                 </v-form>
               </v-card-text>
-              <v-card-actions>
-                <v-btn color="secondary" @click="dialogCreate = false"
+              <v-container class="d-flex justify-end">
+                <v-btn
+                  color="#d35054"
+                  class="mr-4"
+                  @click="dialogCreate = false"
                   >Cancelar</v-btn
                 >
-                <v-btn color="primary" @click="createUser">Salvar</v-btn>
-              </v-card-actions>
+                <v-btn color="#c4bad1" @click="createUser">Salvar</v-btn>
+              </v-container>
             </v-card>
           </v-dialog>
 
@@ -119,14 +127,15 @@ e deletar um usuário. -->
                   ></v-text-field>
                 </v-form>
               </v-card-text>
-              <v-card-actions>
-                <v-btn color="secondary" @click="dialogEdit = false"
+              <v-container class="d-flex justify-end">
+                <v-btn color="#d35054" class="mr-4" @click="dialogEdit = false"
                   >Cancelar</v-btn
                 >
-                <v-btn color="primary" @click="updateUser">Salvar</v-btn>
-              </v-card-actions>
+                <v-btn color="#c4bad1" @click="updateUser">Salvar</v-btn>
+              </v-container>
             </v-card>
           </v-dialog>
+
 
           <!-- Modal de Detalhamento do Usuário -->
           <v-dialog v-model="dialogDetails" max-width="600">
@@ -151,11 +160,11 @@ e deletar um usuário. -->
                   </v-col>
                 </v-row>
               </v-card-text>
-              <v-card-actions>
-                <v-btn color="secondary" @click="dialogDetails = false"
+              <v-container class="d-flex justify-end">
+                <v-btn color="#d35054" @click="dialogDetails = false"
                   >Fechar</v-btn
                 >
-              </v-card-actions>
+              </v-container>
             </v-card>
           </v-dialog>
         </v-toolbar>
@@ -171,7 +180,7 @@ e deletar um usuário. -->
         <!-- Botão/Icon de Detalhes do Usuário -->
         <v-icon
           class="me-2"
-          color="info"
+          color="#5D2AA4"
           size="small"
           @click="viewUserDetails(item)"
         >
@@ -369,7 +378,15 @@ export default {
     const viewUserDetails = async (selectedUser) => {
       try {
         // Retirada do método GET e acessando os detalhes do usuário a partir do JSON de cada usuário gerado.
-        usersDetails.value = selectedUser;
+        usersDetails.value = {
+          id: selectedUser.id,
+          fullName:
+            selectedUser.name.firstname + " " + selectedUser.name.lastname,
+          username: selectedUser.username,
+          email: selectedUser.email,
+          city: selectedUser.address.city,
+          phone: selectedUser.phone,
+        };
 
         dialogDetails.value = true; // Abre o modal de detalhes.
       } catch (error) {
