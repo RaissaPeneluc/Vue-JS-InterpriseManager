@@ -12,7 +12,7 @@ e deletar um usuário. -->
       :headers="headers"
       :items="users"
       item-value="id"
-      class="elevation-1"
+      class="elevation-4 border-thin rounded-lg"
     >
 
       <!-- Define o cabeçalho da tabela e os dados dos usuários-->
@@ -27,7 +27,7 @@ e deletar um usuário. -->
             <!-- Controla a exibição do diálogo de criação de usuários -->
             <template v-slot:activator="{ props }">
               <v-btn
-                class="bg-purple-lighten-5 mr-4"
+                class="bg-deep-purple-lighten-4 mr-4"
                 color="black"
                 v-bind="props"
               >
@@ -83,7 +83,7 @@ e deletar um usuário. -->
                   @click="dialogCreate = false"
                   >Cancelar</v-btn
                 >
-                <v-btn color="#c4bad1" @click="createUser">Salvar</v-btn>
+                <v-btn color="secondary" @click="createUser">Salvar</v-btn>
               </v-container>
             </v-card>
           </v-dialog>
@@ -131,7 +131,7 @@ e deletar um usuário. -->
                 <v-btn color="#d35054" class="mr-4" @click="dialogEdit = false"
                   >Cancelar</v-btn
                 >
-                <v-btn color="#c4bad1" @click="updateUser">Salvar</v-btn>
+                <v-btn color="secondary" @click="updateUser">Salvar</v-btn>
               </v-container>
             </v-card>
           </v-dialog>
@@ -180,7 +180,7 @@ e deletar um usuário. -->
         <!-- Botão/Icon de Detalhes do Usuário -->
         <v-icon
           class="me-2"
-          color="#5D2AA4"
+          color="primary"
           size="small"
           @click="viewUserDetails(item)"
         >

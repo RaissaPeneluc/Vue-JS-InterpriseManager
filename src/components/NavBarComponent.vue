@@ -1,7 +1,8 @@
 <!-- Este componente tem a função de criar uma barra de navegação
 para todas as páginas, que receba os títulos dinamicamente -->
 
-<template>
+<!-- Criação da barra de navegação padrão para as interfaces -->
+<template> 
   <v-container>
     <v-app-bar color="#5D2AA4" class="d-flex">
       <v-row no-gutters align="center" justify="space-between" class="mx-4">
@@ -27,6 +28,7 @@ para todas as páginas, que receba os títulos dinamicamente -->
 <script setup>
 import { useAuthStore } from "../stores/auth";
 
+// Tornando o título dinâmico
 defineProps(["title"]);
 
 const authStore = useAuthStore(); // Recupera a store de autenticação para acessar o usuário e a função de logout.
@@ -37,10 +39,12 @@ const logout = () => {
   window.location.href = "/"; // Redireciona o usuário para a página inicial.
 };
 
+// Redireciorenamento para a interface de produtos 
 const changeToProducts = () => {
   window.location.href = "/products";
 };
 
+// Redirecionamento para a interface de usuários 
 const changeToUsers = () => {
   window.location.href = "/users";
 };

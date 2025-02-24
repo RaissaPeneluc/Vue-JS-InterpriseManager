@@ -4,7 +4,7 @@ acessar o gerenciamento das funcionalidades da plataforma.  -->
 
 <template>
   <v-container>
-    <v-app-bar color="#5D2AA4">
+    <v-app-bar color="primary">
       <v-app-bar-title>Interprise Manager</v-app-bar-title>
     </v-app-bar>
   </v-container>
@@ -41,7 +41,7 @@ acessar o gerenciamento das funcionalidades da plataforma.  -->
             clearable
             required
           ></v-text-field>
-          <v-btn type="submit" color="#5D2AA4" class="mt-4" block>Entrar</v-btn>
+          <v-btn type="submit" color="primary" class="mt-4" block>Entrar</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
