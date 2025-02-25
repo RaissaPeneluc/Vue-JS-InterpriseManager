@@ -6,14 +6,47 @@ e deletar um produto. -->
 <template>
   <NavBarComponent title="Produtos"></NavBarComponent>
 
-  <!-- Container do botão de criar um produto -->
-  <v-container class="d-flex pa-5 mt-10">
-    <v-container class="d-flex justify-end align-center">
-      <v-btn color="secondary" @click="dialogCreate = true">
-        <v-icon icon="mdi-plus" start></v-icon>
-        Criar Produto
-      </v-btn>
-    </v-container>
+  <!-- Container dos botões de criar produtos, filtro e ordenação -->
+  <v-container>
+    <v-row>
+      <v-col cols="12" class="pa-5 mt-10">
+        <v-container class="d-flex justify-end">
+          <v-menu location="start" :close-on-content-click="false">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                icon="mdi-filter"
+                size="small"
+                color="#F5F5F5"
+                class="align-self-center mr-2"
+                @click="getCategories"
+                flat
+              >
+              </v-btn>
+            </template>
+
+            <v-list min-width="200px" class="mr-1">
+              <v-list-item>
+                <v-list-item-title>Filtrar:</v-list-item-title>
+                <v-select
+                  label="Categorias"
+                  :items="productCategories"
+                  variant="solo-filled"
+                  class="mt-2"
+                  v-model="filteredCategories"
+                >
+                </v-select>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+
+          <v-btn color="secondary" @click="dialogCreate = true">
+            <v-icon icon="mdi-plus" start></v-icon>
+            Criar Produto
+          </v-btn>
+        </v-container>
+      </v-col>
+    </v-row>
   </v-container>
 
   <!-- Lista de Produtos -->
@@ -35,7 +68,6 @@ e deletar um produto. -->
             >
               <v-row class="d-flex justify-end mb-1">
                 <v-col cols="3">
-                  
                   <!-- Criação do Menu de Configurações -->
                   <v-menu>
                     <template v-slot:activator="{ props }">
@@ -55,7 +87,6 @@ e deletar um produto. -->
                           icon="mdi-close"
                           color="red"
                           size="small"
-                          class=""
                           @click="menuConfig = false"
                         ></v-btn>
                         <v-btn color="black" @click="openEditDialog(item)">
@@ -229,7 +260,7 @@ e deletar um produto. -->
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import NavBarComponent from "@/components/NavBarComponent.vue";
 
 export default {
@@ -239,12 +270,15 @@ export default {
   setup() {
     const products = ref([]); // Array reativo para armazenar os produtos.
     const productDetails = ref(null); // Objeto reativo para armazenar os detalhes do produto selecionado.
+    const productCategories = ref([]);
+    const filteredCategories = ref("");
 
     // Variáveis reativas para controlar a exibição dos diálogos.
     const dialogCreate = ref(false);
     const dialogEdit = ref(false);
     const dialogDetails = ref(false);
     const menuConfig = ref(false);
+    const menuVisible = ref(false);
 
     // Variável reativa para armazenar o produto selecionado.
     const selectedProduct = ref(null);
@@ -315,7 +349,7 @@ export default {
         menuConfig.value = false; // Abre o modal de configuração
       } catch (error) {
         console.error(error);
-        alert("Erro ao abrir modal.");
+        alert("Erro ao abrir modal de configurações.");
       }
     };
 
@@ -405,9 +439,39 @@ export default {
       }
     };
 
+    const getCategories = async () => {
+      try {
+        const response = await fetch(
+          `https://fakestoreapi.com/products/categories`
+        ); // Requisição GET para a API de produtos.
+        const categories = await response.json(); // Convertendo a resposta para JSON.
+
+        productCategories.value = categories;
+      } catch (error) {
+        console.error(error);
+        alert("Erro ao filtrar produtos.");
+      }
+    };
+
+    // const filterCategory = async (selectedProduct) => {
+    //   try {
+    //     const response = await fetch(
+    //       `https://fakestoreapi.com/products/category/${selectedProduct.category}`
+    //     ); // Requisição GET para a API de produtos.
+    //     const filteredProducts = await response.json(); // Convertendo a resposta para JSON.
+
+    //     productCategories.value = filteredProducts;
+    //   } catch (error) {
+    //     console.error(error);
+    //     alert("Erro ao filtrar produtos.");
+    //   }
+    // };
+
     // Chama a função loadProducts quando o componente é montado.
     onMounted(loadProducts);
-
+    watch(filteredCategories, (newValue, oldValue) => {
+      console.log(newValue, oldValue);
+    });
     return {
       products,
       dialogCreate,
@@ -418,6 +482,9 @@ export default {
       newProduct,
       editProduct,
       productDetails,
+      productCategories,
+      menuVisible,
+      filteredCategories,
       loadProducts,
       openConfigModal,
       openEditDialog,
@@ -425,6 +492,7 @@ export default {
       updateProduct,
       deleteProduct,
       viewProductDetails,
+      getCategories,
     };
   },
 };
