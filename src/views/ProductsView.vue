@@ -25,13 +25,18 @@ e deletar um produto. -->
         class="d-inline-flex pa-2 ml-3 mb-15 align-center rounded-lg border-thin"
         cols="2"
       >
-
-      <!-- Organizando os cards de cada produto -->
+        <!-- Organizando os cards de cada produto -->
         <v-hover>
           <template v-slot:default="{ isHovering, props }">
-            <v-card v-bind="props" :elevation="isHovering ? '4' : '0'" class="cursor-pointer">
+            <v-card
+              v-bind="props"
+              :elevation="isHovering ? '4' : '0'"
+              class="cursor-pointer w-100"
+            >
               <v-row class="d-flex justify-end mb-1">
                 <v-col cols="3">
+                  
+                  <!-- Criação do Menu de Configurações -->
                   <v-menu>
                     <template v-slot:activator="{ props }">
                       <v-btn
@@ -100,7 +105,7 @@ e deletar um produto. -->
     </v-row>
   </v-container>
 
-  <!-- Modal do Formulário de Criação -->
+  <!-- Modal de Criação de um Produto -->
   <v-container>
     <v-dialog v-model="dialogCreate" max-width="600">
       <!-- Controla a exibição do diálogo de criação de produtos -->
@@ -146,7 +151,7 @@ e deletar um produto. -->
     </v-dialog>
   </v-container>
 
-  <!-- Modal do Formulário de Editar Produto -->
+  <!-- Modal de Editar Produto -->
   <v-container>
     <v-dialog v-model="dialogEdit" max-width="600">
       <!-- Controla a exibição do diálogo de edição de produtos -->
@@ -304,7 +309,8 @@ export default {
       }
     };
 
-    const openModal = async () => {
+    // Função de abertura do modal de configurações
+    const openConfigModal = async () => {
       try {
         menuConfig.value = false; // Abre o modal de configuração
       } catch (error) {
@@ -332,17 +338,6 @@ export default {
         };
 
         dialogEdit.value = true; // Abre o modal de edição
-      } catch (error) {
-        console.error(error);
-        alert("Erro ao buscar os detalhes do produto.");
-      }
-    };
-
-    // Função para exibir detalhes de um produto.
-    const viewProductDetails = async (selectedProduct) => {
-      try {
-        productDetails.value = selectedProduct; // Retirada do método GET e acessando os detalhes do usuário a partir do JSON de cada usuário gerado.
-        dialogDetails.value = true; // Abre o modal de detalhes.
       } catch (error) {
         console.error(error);
         alert("Erro ao buscar os detalhes do produto.");
@@ -380,6 +375,17 @@ export default {
       }
     };
 
+    // Função para exibir detalhes de um produto.
+    const viewProductDetails = async (selectedProduct) => {
+      try {
+        productDetails.value = selectedProduct; // Retirada do método GET e acessando os detalhes do usuário a partir do JSON de cada usuário gerado.
+        dialogDetails.value = true; // Abre o modal de detalhes.
+      } catch (error) {
+        console.error(error);
+        alert("Erro ao buscar os detalhes do produto.");
+      }
+    };
+
     // Função para deletar um produto.
     const deleteProduct = async (selectedProduct) => {
       try {
@@ -413,7 +419,7 @@ export default {
       editProduct,
       productDetails,
       loadProducts,
-      openModal,
+      openConfigModal,
       openEditDialog,
       createProduct,
       updateProduct,
